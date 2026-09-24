@@ -4,23 +4,44 @@ public class Exit : MonoBehaviour
 {
     public GameObject winText;
 
-    private void Start()
+    void Start()
     {
-        winText.SetActive(false);
+        if (winText != null)
+        {
+            winText.SetActive(false);
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Player"))
+        PlayerColorController player =
+            other.GetComponentInParent<PlayerColorController>();
+
+        if (player == null)
         {
             return;
         }
 
-        GameObject[] seeds = GameObject.FindGameObjectsWithTag("Seeds");
+        GameObject[] seeds =
+            GameObject.FindGameObjectsWithTag("Seeds");
 
         if (seeds.Length == 0)
         {
-            winText.SetActive(true);
+            if (winText != null)
+            {
+                winText.SetActive(true);
+            }
+
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.WinGame();
+            }
+        }
+        else
+        {
+            Debug.Log(
+                "Collect all Moon Seeds before using the exit!"
+            );
         }
     }
 }
