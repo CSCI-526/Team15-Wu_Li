@@ -18,7 +18,7 @@ public class MoonSeed : MonoBehaviour
         Debug.Log("Seed touched by: " + other.gameObject.name);
 
         PlayerColorController player =
-            other.GetComponentInParent<PlayerColorController>();
+        other.GetComponentInParent<PlayerColorController>();
 
         if (player == null)
         {
@@ -36,23 +36,22 @@ public class MoonSeed : MonoBehaviour
             collected = true;
             Debug.Log("Correct color! Seed collected.");
 
-            if (GameManager.Instance != null)
-            {
+            if (GameManager.Instance != null){
                 GameManager.Instance.CollectSeed();
+                GameManager.Instance.HealPlayer();
             }
             else
             {
                 Debug.LogWarning("GameManager was not found.");
             }
-
             Destroy(gameObject);
         }
         else
         {
-            Debug.Log(
-                "Wrong color. Player: " + player.CurrentColor
-                + ", Seed: " + seedColor
-            );
+            Debug.Log("Wrong color. Player: " + player.CurrentColor + ", Seed: " + seedColor);
+            if (GameManager.Instance != null){
+                GameManager.Instance.DamagePlayer();
+            }
         }
     }
 
